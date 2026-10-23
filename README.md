@@ -142,5 +142,5 @@ already-planted webshells. Test on a non-production copy when possible.
 ---
 
 <div align="center">
-Made with 🛡️ and ☕ by <b>Trung Nguyen</b> — [github.com/nttrung9x](https://github.com/nttrung9x)
+Made with 🛡️ and ☕ by <b>Trung Nguyen</b> — <a href="https://github.com/nttrung9x">github.com/nttrung9x</a>
 </div>
