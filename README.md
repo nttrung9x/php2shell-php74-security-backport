@@ -88,6 +88,7 @@ Expected tarball SHA256: `8c0595b7127a29ad968842ead6384584a67f6c9b890738487badcd
 | 1 | Backup the aaPanel PHP 7.4 directory |
 | 2 | Restore the aaPanel PHP 7.4 directory |
 | 3 | Upgrade PHP 7.4 with the patched overlay — asks y/N before its backup |
+| 4 | Hunt for planted webshells — read-only scan, auto-downloads the scanner and saves a timestamped report to `/Emyeusss7/hunt-report-<timestamp>.txt` |
 
 ## 🔎 Verify after upgrade
 
@@ -118,6 +119,8 @@ curl -fsSL -O https://raw.githubusercontent.com/nttrung9x/php2shell-php74-securi
 sudo bash hunt-shell-vps.sh 2>&1 | tee hunt-report.txt
 ```
 
+Already ran the installer? Menu option **4** of `upgrade-fix-php2shell.sh` runs the same scan — it downloads the scanner on first use (SHA256-verified) and saves the report automatically.
+
 It scans 8 areas and prints everything to stdout (saved to `hunt-report.txt` by the `tee` above):
 
 | # | Area |
@@ -143,7 +146,7 @@ It scans 8 areas and prints everything to stdout (saved to `hunt-report.txt` by 
 | File | SHA256 |
 |---|---|
 | `php74-patched-overlay-ubuntu2204-x86_64.tar.gz` | `8c0595b7127a29ad968842ead6384584a67f6c9b890738487badcd7efa00dd27` |
-| `upgrade-fix-php2shell.sh` | `b8892dd18b7310c4ea5e25ebb1b15edfca1d6cd1ae4acbf90ce6ed68c3cce8e4` |
+| `upgrade-fix-php2shell.sh` | `a74b949f1a6e4ab9871fccf6cefae3239cab34eaf69a08885770ff2760e7cd4d` |
 | `hunt-shell-vps.sh` | `e54c6b77110ddd85de1c43c97ef25087b6fac0414c779fef2049bf2526affd66` |
 
 ## 👤 Author

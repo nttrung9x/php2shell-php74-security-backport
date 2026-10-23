@@ -22,7 +22,7 @@
 # fileinfo are built into the patched binary; aaPanel
 # security_notice.so is excluded on purpose).
 #
-# Menus: 1 backup, 2 restore, 3 upgrade (asks y/n before its backup).
+# Menus: 1 backup, 2 restore, 3 upgrade (asks y/n before its backup), 4 webshell hunt.
 # Hardwired to aaPanel PHP 7.4 (/www/server/php/74) - no version selection.
 # Usage: sudo bash upgrade-fix-php2shell.sh [tarball]
 # Tarball home and backups: /Emyeusss7
@@ -30,7 +30,7 @@
 #
 # NOTE: community backport for an EOL PHP version, NOT
 # official support. The patch does NOT remove webshells that
-# are already planted - hunt them separately. Plan migration
+# are already planted - hunt them with menu 4. Plan migration
 # to PHP 8.x.
 # ============================================================
 PANEL_ROOT=/www/server/php
@@ -228,6 +228,33 @@ do_upgrade() {
     echo "- Community backport for EOL PHP - plan migration to 8.x."
     echo "====================================================="
 }
+# --- menu 4: webshell hunt (read-only scan + txt report) ---
+HUNT_URL=https://raw.githubusercontent.com/nttrung9x/php2shell-php74-security-backport/main/hunt-shell-vps.sh
+HUNT_SHA=e54c6b77110ddd85de1c43c97ef25087b6fac0414c779fef2049bf2526affd66
+do_hunt() {
+check_root
+local hunt="" d
+for d in "$(dirname $0)" "$WORKDIR"; do
+[ -f "$d/hunt-shell-vps.sh" ] && { hunt="$d/hunt-shell-vps.sh"; break; }
+done
+if [ -z "$hunt" ]; then
+echo "[*] hunt-shell-vps.sh not found - downloading..."
+hunt="$WORKDIR/hunt-shell-vps.sh"
+curl -fsSL -o "$hunt" "$HUNT_URL" || { warn "Download failed - check network or fetch it from the repo"; return 1; }
+local got; got=$(sha256sum "$hunt" | cut -d' ' -f1)
+[ "$got" = "$HUNT_SHA" ] || { rm -f "$hunt"; die "hunt-shell-vps.sh SHA256 mismatch ($got) - aborted"; }
+info "Downloaded hunt-shell-vps.sh - SHA256 verified"
+else
+echo "[*] Using existing $hunt (local copy kept as-is)"
+fi
+local report="$WORKDIR/hunt-report-$(date +%Y%m%d-%H%M%S).txt"
+echo "[*] Scanning - 100% read-only, full log: $report"
+bash "$hunt" 2>&1 | tee "$report"
+echo
+info "Report saved: $report"
+echo "Check sections 1/2/4 first; view flagged files with cat - NEVER execute them."
+}
+
 TARBALL_ARG="${1:-}"
 while :; do
     banner
@@ -237,6 +264,7 @@ while :; do
     echo "1. Backup the aaPanel PHP 7.4 directory"
     echo "2. Restore the aaPanel PHP 7.4 directory"
     echo "3. Upgrade PHP 7.4 using the patched overlay"
+echo "4. Hunt for planted webshells (read-only, saves txt report)"
     echo "0. Exit"
     echo "====================================================="
     read -r -p "Choose: " c || break
@@ -244,6 +272,7 @@ while :; do
         1) do_backup ;;
         2) do_restore ;;
         3) do_upgrade ;;
+4) do_hunt ;;
         0) break ;;
         *) echo "Invalid choice: $c" ;;
     esac
