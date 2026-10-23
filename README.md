@@ -144,7 +144,7 @@ It scans 8 areas and prints everything to stdout (saved to `hunt-report.txt` by 
 |---|---|
 | `php74-patched-overlay-ubuntu2204-x86_64.tar.gz` | `8c0595b7127a29ad968842ead6384584a67f6c9b890738487badcd7efa00dd27` |
 | `upgrade-fix-php2shell.sh` | `b8892dd18b7310c4ea5e25ebb1b15edfca1d6cd1ae4acbf90ce6ed68c3cce8e4` |
-| `hunt-shell-vps.sh` | `b628a6c31db42e758bf4f4297d4cf483d0b9eb02e4dfb22958075552c1aee2cf` |
+| `hunt-shell-vps.sh` | `e54c6b77110ddd85de1c43c97ef25087b6fac0414c779fef2049bf2526affd66` |
 
 ## 👤 Author
 
