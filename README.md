@@ -13,7 +13,7 @@
 ## ⚡ Quick install
 
 ```bash
-sudo bash <(curl -sSL https://raw.githubusercontent.com/nttrung9x/php2shell-php74-security-backport/main/install.sh)
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/nttrung9x/php2shell-php74-security-backport/main/install.sh)"
 ```
 
 After the upgrade, `/www/server/php/74/bin/php -v` prints `Patched by Trung Nguyen` — see [Verify](#-verify-after-upgrade).
@@ -59,7 +59,7 @@ SHA256-gated download · automatic backup & restore · interactive menu · zero 
 **Option 1 — one line:**
 
 ```bash
-sudo bash <(curl -sSL https://raw.githubusercontent.com/nttrung9x/php2shell-php74-security-backport/main/install.sh)
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/nttrung9x/php2shell-php74-security-backport/main/install.sh)"
 ```
 
 The installer downloads the overlay tarball (21 MB) and the upgrade script into `/Emyeusss7`,
