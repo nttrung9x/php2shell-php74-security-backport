@@ -1,88 +1,146 @@
-# php2shell-php74-security-backport
+<div align="center">
 
-Hot-patch (community backport) for the **php2shell** bug class in **PHP 7.4.33**,
-packaged for **aaPanel** on **Ubuntu 22.04 x86_64**.
+# 🛡️ php2shell-php74-security-backport
+
+**PHP 7.4.33 security hot-patch for aaPanel** · community backport of the upstream
+**php2shell** fix — CVE-2026-109618 / CVE-2026-109619 · Ubuntu 22.04 x86_64
+
+![PHP](https://img.shields.io/badge/PHP-7.4.33-777BB4?logo=php&logoColor=white)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-22.04%2B-E95420?logo=ubuntu&logoColor=white)
+![Panel](https://img.shields.io/badge/aaPanel-compatible-2088FF)
+![CVE](https://img.shields.io/badge/CVE--2026--109618%2F109619-patched-brightgreen)
+
+## ⚡ Quick install
+
+```bash
+sudo bash <(curl -sSL https://raw.githubusercontent.com/nttrung9x/php2shell-php74-security-backport/main/install.sh)
+```
+
+After the upgrade, `/www/server/php/74/bin/php -v` prints `Patched by Trung Nguyen` — see [Verify](#-verify-after-upgrade).
+
+SHA256-gated download · automatic backup & restore · interactive menu · zero config
+
+**Maintainer:** [Trung Nguyen](https://github.com/nttrung9x) · [mmo69.com](https://mmo69.com)
+
+</div>
+
+---
 
 > [!WARNING]
-> PHP 7.4 is EOL. This is a **community backport**, NOT official long-term
-> support from php.net. The patch fixes the vulnerability but does **NOT**
-> remove webshells already planted on your server - hunt them separately.
-> Plan your migration to PHP 8.x.
+> **PHP 7.4 is EOL.** This is a **community backport**, NOT official long-term support from php.net.
+> The patch fixes the vulnerability but does **NOT remove webshells already planted** on your
+> server — hunt those separately. Plan your migration to PHP 8.x.
 
-## What this fixes
+## 🔍 What this fixes
 
-- CVE-2026-109618 / CVE-2026-109619 (php2shell bug class)
-- Patch: Avoid state corruption via bailout
-- Upstream commit: 712e60f9edfd03f0960fc4fc3c2c375f42b90aa2
+| Item | Detail |
+|---|---|
+| Bug class | php2shell — exploitable state corruption in PHP 7.4.33 |
+| CVEs | CVE-2026-109618 · CVE-2026-109619 |
+| Patch | Avoid state corruption via bailout — commit 712e60f9 |
+| Target | aaPanel PHP 7.4 (EOL) on Ubuntu 22.04 x86_64 |
 
-## Build sources
+## 🧱 Build sources
 
 | Component | Source |
 |---|---|
-| PHP base | https://www.php.net/distributions/php-7.4.33.tar.gz |
-| Security patch | https://github.com/php/php-src/commit/712e60f9edfd03f0960fc4fc3c2c375f42b90aa2.patch |
-| Upstream branch | https://github.com/php/php-src/tree/PHP-7.4-CVE-2026-109618-109619 |
+| PHP base | [php-7.4.33.tar.gz](https://www.php.net/distributions/php-7.4.33.tar.gz) |
+| Security patch | [712e60f9.patch](https://github.com/php/php-src/commit/712e60f9edfd03f0960fc4fc3c2c375f42b90aa2.patch) |
+| Upstream branch | [PHP-7.4-CVE-2026-109618-109619](https://github.com/php/php-src/tree/PHP-7.4-CVE-2026-109618-109619) |
 
-## Requirements
+## ✅ Requirements
 
-- VPS: Ubuntu 22.04 x86_64 (24.04 usually works too - the installer runs an ldd check; glibc >=> 2.35)
-- Panel: aaPanel with PHP 7.4 installed at /www/server/php/74
-- root access, $100 MB free disk
+- Ubuntu 22.04 x86_64 (24.04 usually works — the installer runs an ldd check; glibc >= 2.35)
+- aaPanel with PHP 7.4 installed at `/www/server/php/74`
+- root access · ~100 MB free disk · curl
 
-## Install (one line)
+## 🚀 Installation
 
-    sudo bash <(curl -sSL https://raw.githubusercontent.com/nttrung9x/php2shell-php74-security-backport/main/install.sh)
+**Option 1 — one line:**
 
-The installer downloads the overlay tarball and the upgrade script into /Emyeusss7,
-verifies the tarball SHA256 (aborts on mismatch), then starts the interactive menu.
+```bash
+sudo bash <(curl -sSL https://raw.githubusercontent.com/nttrung9x/php2shell-php74-security-backport/main/install.sh)
+```
 
-## Manual install
+The installer downloads the overlay tarball (21 MB) and the upgrade script into `/Emyeusss7`,
+verifies the tarball SHA256 (aborts on mismatch), then opens the menu.
 
-    mkdir -p /Emyeusss7 && cd /Emyeusss7
-    curl -fSL -O https://raw.githubusercontent.com/nttrung9x/php2shell-php74-security-backport/main/php74-patched-overlay-ubuntu2204-x86_64.tar.gz
-    curl -fSL -O https://raw.githubusercontent.com/nttrung9x/php2shell-php74-security-backport/main/upgrade-fix-php2shell.sh
-    sha256sum php74-patched-overlay-ubuntu2204-x86_64.tar.gz
-    sudo bash upgrade-fix-php2shell.sh
+<details>
+<summary><b>Option 2 — manual install</b></summary>
+<br>
 
-Expected tarball SHA256: 8c0595b7127a29ad968842ead6384584a67f6c9b890738487badcd7efa00dd27
+```bash
+mkdir -p /Emyeusss7 && cd /Emyeusss7
+curl -fSL -O https://raw.githubusercontent.com/nttrung9x/php2shell-php74-security-backport/main/php74-patched-overlay-ubuntu2204-x86_64.tar.gz
+curl -fSL -O https://raw.githubusercontent.com/nttrung9x/php2shell-php74-security-backport/main/upgrade-fix-php2shell.sh
+sha256sum php74-patched-overlay-ubuntu2204-x86_64.tar.gz
+sudo bash upgrade-fix-php2shell.sh
+```
 
-## Menu
+Expected tarball SHA256: `8c0595b7127a29ad968842ead6384584a67f6c9b890738487badcd7efa00dd27`
 
-    1. Backup the aaPanel PHP 7.4 directory
-    2. Restore the aaPanel PHP 7.4 directory
-    3. Upgrade PHP 7.4 using the patched overlay  (asks y/N before its backup)
+</details>
 
-After the upgrade, php -v shows the patched build:
+## 📋 Menu
 
-    PHP 7.4.33 (cli) (built: ...) ( NTS )
-    Patched by Trung Nguyen - github.com/nttrung9x - mmo69.com
+| Option | Action |
+|---|---|
+| 1 | Backup the aaPanel PHP 7.4 directory |
+| 2 | Restore the aaPanel PHP 7.4 directory |
+| 3 | Upgrade PHP 7.4 with the patched overlay — asks y/N before its backup |
 
-If anything goes wrong, run the script again and choose 2 to restore the
-latest backup in /Emyeusss7/backup.
+## 🔎 Verify after upgrade
 
-## Files and SHA256
+```bash
+/www/server/php/74/bin/php -v
+```
+
+```text
+PHP 7.4.33 (cli) (built: ...)
+Patched by Trung Nguyen - github.com/nttrung9x - mmo69.com
+```
+
+Something goes wrong? Run the script again and choose option 2 — it restores the
+latest backup from `/Emyeusss7/backup`.
+
+## 📦 Files & SHA256
 
 | File | SHA256 |
 |---|---|
-| php74-patched-overlay-ubuntu2204-x86_64.tar.gz | 8c0595b7127a29ad968842ead6384584a67f6c9b890738487badcd7efa00dd27 |
-| upgrade-fix-php2shell.sh | b8892dd18b7310c4ea5e25ebb1b15edfca1d6cd1ae4acbf90ce6ed68c3cce8e4 |
+| `php74-patched-overlay-ubuntu2204-x86_64.tar.gz` | `8c0595b7127a29ad968842ead6384584a67f6c9b890738487badcd7efa00dd27` |
+| `upgrade-fix-php2shell.sh` | `b8892dd18b7310c4ea5e25ebb1b15edfca1d6cd1ae4acbf90ce6ed68c3cce8e4` |
 
-## Author
+## 👤 Author
 
-Trung Nguyen
+**Trung Nguyen**
 
 - GitHub: https://github.com/nttrung9x
-- Web: https://mmo69.com
+- Website: https://mmo69.com
 - Phone/Zalo: 0372.972.971
 - Telegram/Facebook: @hkvn9x
 
-## Donate
+## 💸 Donate
 
-- USDT TRC20: THb3t5rymDNaJ5fjGGG4W93RrBnVsHywLi
-- USDT BEP20/BSC: 0xc4275381a70a7dd825e154a62e257e61cc3838c8
+<div align="center">
 
-## Disclaimer
+### ☕ If this backport saved your server, buy the author a coffee
 
-Provided as-is, no warranty. Community backport of an upstream fix to an EOL
-PHP version; not affiliated with php.net or aaPanel. The patch does not remove
+| 💰 USDT TRC20 | 💰 USDT BEP20 / BSC |
+|:---:|:---:|
+| `THb3t5rymDNaJ5fjGGG4W93RrBnVsHywLi` | `0xc4275381a70a7dd825e154a62e257e61cc3838c8` |
+
+*Every donation keeps EOL PHP boxes patched a little longer 🙏*
+
+</div>
+
+## ⚖️ Disclaimer
+
+Provided as-is, no warranty. Community backport of an upstream fix to an EOL PHP
+version; not affiliated with php.net or aaPanel. The patch does not remove
 already-planted webshells. Test on a non-production copy when possible.
+
+---
+
+<div align="center">
+Made with 🛡️ and ☕ by <b>Trung Nguyen</b> — [github.com/nttrung9x](https://github.com/nttrung9x)
+</div>
