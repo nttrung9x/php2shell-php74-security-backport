@@ -62,8 +62,8 @@ SHA256-gated download · automatic backup & restore · interactive menu · zero 
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/nttrung9x/php2shell-php74-security-backport/main/install.sh)"
 ```
 
-The installer downloads the overlay tarball (21 MB) and the upgrade script into `/Emyeusss7`,
-verifies the tarball SHA256 (aborts on mismatch), then opens the menu.
+The installer downloads the overlay tarball (21 MB), the upgrade script and the webshell
+scanner into `/Emyeusss7`, verifies SHA256 (aborts on mismatch), then opens the menu.
 
 <details>
 <summary><b>Option 2 — manual install</b></summary>
@@ -119,7 +119,7 @@ curl -fsSL -O https://raw.githubusercontent.com/nttrung9x/php2shell-php74-securi
 sudo bash hunt-shell-vps.sh 2>&1 | tee hunt-report.txt
 ```
 
-Already ran the installer? Menu option **4** of `upgrade-fix-php2shell.sh` runs the same scan — it downloads the scanner on first use (SHA256-verified) and saves the report automatically.
+Already ran the installer? Menu option **4** of `upgrade-fix-php2shell.sh` runs the same scan — the scanner is already in `/Emyeusss7` (menu 4 auto-downloads it with SHA256 verification if missing) and the report is saved automatically.
 
 It scans 8 areas and prints everything to stdout (saved to `hunt-report.txt` by the `tee` above):
 
