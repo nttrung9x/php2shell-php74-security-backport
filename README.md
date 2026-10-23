@@ -29,7 +29,7 @@ SHA256-gated download · automatic backup & restore · interactive menu · zero 
 > [!WARNING]
 > **PHP 7.4 is EOL.** This is a **community backport**, NOT official long-term support from php.net.
 > The patch fixes the vulnerability but does **NOT remove webshells already planted** on your
-> server — hunt those separately. Plan your migration to PHP 8.x.
+> server — run the [read-only webshell scanner](#-hunt-for-planted-webshells). Plan your migration to PHP 8.x.
 
 ## 🔍 What this fixes
 
@@ -103,12 +103,48 @@ Patched by Trung Nguyen - github.com/nttrung9x - mmo69.com
 Something goes wrong? Run the script again and choose option 2 — it restores the
 latest backup from `/Emyeusss7/backup`.
 
+## 🧹 Hunt for planted webshells
+
+> [!IMPORTANT]
+> The patch closes the door — it does **not** evict anyone already inside. If this server ran
+> unpatched PHP 7.4 during the disclosure window (exploitation observed worldwide from
+> **2026-10-17**, public disclosure **2026-10-21**), scan it for webshells and backdoors.
+
+**`hunt-shell-vps.sh` is 100% read-only** — it only reads and reports: no edits, no deletions,
+no service restarts. Designed for aaPanel multi-domain servers.
+
+```bash
+curl -fsSL -O https://raw.githubusercontent.com/nttrung9x/php2shell-php74-security-backport/main/hunt-shell-vps.sh
+sudo bash hunt-shell-vps.sh 2>&1 | tee hunt-report.txt
+```
+
+It scans 8 areas and prints everything to stdout (saved to `hunt-report.txt` by the `tee` above):
+
+| # | Area |
+|---|---|
+| 1 | Webshell signatures — `eval(base64_decode(...))`, `gzinflate`, `$_POST`-driven `eval`/`system`, WSO / c99 / b374k / FilesMan / Weevely … |
+| 2 | `.php` / `.phtml` files created or modified in the exposure window |
+| 3 | Disguised filenames — `shell.jpg.php`, `.phtml`, `.php5`, hidden dotfiles |
+| 4 | Small (`< 3 KB`) `.php` files with obfuscated code (China Chopper style) |
+| 5 | Persistence — cron jobs, `authorized_keys`, new systemd units, `rc.local` |
+| 6 | Abnormal PHP processes (not regular php-fpm master/pool workers) |
+| 7 | Logs — attack-tool user agents, `POST` requests to unexpected `.php` endpoints |
+| 8 | Executables parked in `/tmp`, `/var/tmp`, `/dev/shm` |
+
+**Reading the report**
+
+- Empty section = nothing found in that area.
+- Section 2 hard-codes the window **2026-10-16 → 2026-10-23** (in-the-wild exploitation → first patched builds). Edit the two dates in the script if your exposure window differs.
+- Anything flagged in sections 1 / 2 / 4: inspect with `cat <file>` — **never execute it**.
+- Confirmed compromise? Rotate every credential (aaPanel, MySQL, SSH keys), remove the payload, diff sites against clean backups, and audit other sites sharing the server.
+
 ## 📦 Files & SHA256
 
 | File | SHA256 |
 |---|---|
 | `php74-patched-overlay-ubuntu2204-x86_64.tar.gz` | `8c0595b7127a29ad968842ead6384584a67f6c9b890738487badcd7efa00dd27` |
 | `upgrade-fix-php2shell.sh` | `b8892dd18b7310c4ea5e25ebb1b15edfca1d6cd1ae4acbf90ce6ed68c3cce8e4` |
+| `hunt-shell-vps.sh` | `b628a6c31db42e758bf4f4297d4cf483d0b9eb02e4dfb22958075552c1aee2cf` |
 
 ## 👤 Author
 
